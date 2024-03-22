@@ -1,0 +1,7 @@
+.idea
+.vscode
+.fleet
+Dockerfile
+docker-compose.yml
+**/*.md
+docs

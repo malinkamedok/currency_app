@@ -1,0 +1,66 @@
+---
+openapi: 3.0.3
+info:
+  title: "Микросервис парсинга курса валют ЦБ РФ"
+  description: "Приложение, отдающее курс валюты по ЦБ РФ за определенную дату. Для получения курсов валют используется официальное API ЦБ РФ."
+  version: 1.0.0
+servers:
+  - url: http://localhost:8000
+paths:
+  /info:
+    get:
+      tags:
+        - info
+      summary: Функция получения курса валюты за определенную дату
+      description: Принимает название валюты в формате ISO 4217 и дату в формате YYYY-MM-DD.
+      operationId: getCurrencyRate
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/request'
+        required: true
+      responses:
+        '200':
+          description: Данные получены успешно
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/response'
+        '422':
+          description: Некорректные данные
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/incorrectResponse'
+components:
+    schemas:
+      request:
+        required:
+          - currency
+        type: object
+        properties:
+          currency:
+            type: string
+            example: USD
+          date:
+            type: string
+            example: 2016-01-02
+      response:
+        type: object
+        properties:
+          data:
+            type: object
+            example: '{"USD":"33,4013"}'
+          service:
+            type: string
+            example: 'currency'
+      incorrectResponse:
+        type: object
+        properties:
+          status:
+            type: string
+            example: "Error rendering response."
+          error:
+            type: string
+            example: "incorrect currency code"
