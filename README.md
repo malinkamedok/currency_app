@@ -58,3 +58,6 @@
 ```bash
 docker-compose up --build
 ```
+
+[Ссылка на документацию](https://malinkamedok.github.io/currency_app/)
+
