@@ -29,4 +29,4 @@ jobs:
           context: .
           file: ./Dockerfile
           push: true
-          tags: ghcr.io/${{ github.repository }}/currency_app:latest
+          tags: ghcr.io/${{ github.repository }}:latest
