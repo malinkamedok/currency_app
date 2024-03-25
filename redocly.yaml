@@ -1,0 +1,12 @@
+apis:
+  main@v1:
+    root: docs/openapi.yaml
+lint:
+  rules:
+    security-defined: off
+features.openapi:
+  pagination: section
+  showConsole: true
+  theme:
+    sidebar:
+      backgroundColor: '#FFFFFF'
