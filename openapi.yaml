@@ -51,7 +51,8 @@ components:
         properties:
           data:
             type: object
-            example: '{"USD":"33,4013"}'
+            example:
+              USD: '33,4013'
           service:
             type: string
             example: 'currency'
