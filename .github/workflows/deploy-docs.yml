@@ -18,11 +18,14 @@ jobs:
         with:
           node-version: '20'
 
-      - name: Install redoc-cli
-        run: npm install -g redoc-cli
+      - name: Install redocly
+        run: npm i -g @redocly/cli@latest
+
+      - name: Lint docs
+        run: redocly lint
 
       - name: Generate static HTML documentation
-        run: redoc-cli bundle docs/openapi.yaml -o docs/index.html
+        run: redocly build-docs -o docs/index.html
 
       - name: Deploy to GitHub Pages
         uses: JamesIves/github-pages-deploy-action@v4
