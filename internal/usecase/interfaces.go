@@ -10,10 +10,10 @@ type (
 		InitRequest(dateFormatted string) (*http.Request, error)
 		SendRequest(r *http.Request) (*http.Response, error)
 		DecodeResponse(response *http.Response) (*entity.ValCurs, error)
-		FindCurrencyRate(currency string, currencyRates *entity.ValCurs) (string, error)
+		FindCurrencyRate(currency string, currencyRates *entity.ValCurs) (float64, error)
 	}
 
 	InfoContract interface {
-		GetCurrencyRate(currency string, date string) (string, error)
+		GetCurrencyRate(currency string, date string) (float64, error)
 	}
 )

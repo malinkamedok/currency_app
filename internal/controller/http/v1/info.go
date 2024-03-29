@@ -16,12 +16,13 @@ type infoRoutes struct {
 func NewInfoRoutes(routes chi.Router, i usecase.InfoContract) {
 	ir := &infoRoutes{i: i}
 
-	routes.Get("/", ir.getCurrencyRate)
+	routes.Get("/currency", ir.getCurrencyRate)
+	routes.Get("/", ir.getServiceType)
 }
 
 type resp struct {
-	Data    map[string]string `json:"data"`
-	Service string            `json:"service"`
+	Data    map[string]float64 `json:"data"`
+	Service string             `json:"service"`
 }
 
 func (i *infoRoutes) getCurrencyRate(w http.ResponseWriter, r *http.Request) {
@@ -37,6 +38,11 @@ func (i *infoRoutes) getCurrencyRate(w http.ResponseWriter, r *http.Request) {
 		}
 		return
 	}
-	responseJSON := resp{Data: map[string]string{currency: response}, Service: "currency"}
+	responseJSON := resp{Data: map[string]float64{currency: response}, Service: "currency"}
+	render.JSON(w, r, responseJSON)
+}
+
+func (i *infoRoutes) getServiceType(w http.ResponseWriter, r *http.Request) {
+	responseJSON := resp{Service: "currency"}
 	render.JSON(w, r, responseJSON)
 }
