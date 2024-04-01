@@ -38,7 +38,7 @@ func (i *infoRoutes) getCurrencyRate(w http.ResponseWriter, r *http.Request) {
 		}
 		return
 	}
-	responseJSON := resp{Data: map[string]float64{currency: response}, Service: "currency"}
+	responseJSON := resp{Data: response, Service: "currency"}
 	render.JSON(w, r, responseJSON)
 }
 
