@@ -18,40 +18,56 @@ func NewInfoUseCase(cbrf InfoReq) *InfoUseCase {
 	return &InfoUseCase{cbrf: cbrf}
 }
 
-func (i InfoUseCase) GetCurrencyRate(currency string, date string) (float64, error) {
-	currency = strings.ToUpper(currency)
-
-	correct := checkCurrencyCorrect(currency)
-	if !correct {
-		return 0, fmt.Errorf("incorrect currency code")
-	}
+func (i InfoUseCase) GetCurrencyRate(currencyCode string, date string) (map[string]float64, error) {
 
 	dateFormatted, err := parseAndFormatDate(date)
 	if err != nil {
-		return 0, err
+		return nil, err
 	}
 
 	req, err := i.cbrf.InitRequest(dateFormatted)
 	if err != nil {
-		return 0, err
+		return nil, err
 	}
 
 	resp, err := i.cbrf.SendRequest(req)
 	if err != nil {
-		return 0, err
+		return nil, err
 	}
 
 	rates, err := i.cbrf.DecodeResponse(resp)
 	if err != nil {
-		return 0, err
+		return nil, err
 	}
 
-	currencyRate, err := i.cbrf.FindCurrencyRate(currency, rates)
-	if err != nil {
-		return 0, err
+	currencyResult := make(map[string]float64)
+
+	if currencyCode == "" {
+		for _, v := range rates.Valutes {
+			currencyRate, err := i.cbrf.FindCurrencyRate(v.CharCode, rates)
+			if err != nil {
+				return nil, err
+			}
+
+			currencyResult[v.CharCode] = currencyRate
+		}
+	} else {
+		currencyCode = strings.ToUpper(currencyCode)
+
+		correct := checkCurrencyCorrect(currencyCode)
+		if !correct {
+			return nil, fmt.Errorf("incorrect currency code")
+		}
+
+		currencyRate, err := i.cbrf.FindCurrencyRate(currencyCode, rates)
+		if err != nil {
+			return nil, err
+		}
+
+		currencyResult[currencyCode] = currencyRate
 	}
 
-	return currencyRate, nil
+	return currencyResult, nil
 }
 
 func checkCurrencyCorrect(currency string) bool {
