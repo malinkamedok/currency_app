@@ -14,6 +14,6 @@ type (
 	}
 
 	InfoContract interface {
-		GetCurrencyRate(currency string, date string) (float64, error)
+		GetCurrencyRate(currency string, date string) (map[string]float64, error)
 	}
 )
