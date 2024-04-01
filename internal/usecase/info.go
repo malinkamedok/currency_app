@@ -18,37 +18,37 @@ func NewInfoUseCase(cbrf InfoReq) *InfoUseCase {
 	return &InfoUseCase{cbrf: cbrf}
 }
 
-func (i InfoUseCase) GetCurrencyRate(currency string, date string) (string, error) {
+func (i InfoUseCase) GetCurrencyRate(currency string, date string) (float64, error) {
 	currency = strings.ToUpper(currency)
 
 	correct := checkCurrencyCorrect(currency)
 	if !correct {
-		return "", fmt.Errorf("incorrect currency code")
+		return 0, fmt.Errorf("incorrect currency code")
 	}
 
 	dateFormatted, err := parseAndFormatDate(date)
 	if err != nil {
-		return "", err
+		return 0, err
 	}
 
 	req, err := i.cbrf.InitRequest(dateFormatted)
 	if err != nil {
-		return "", err
+		return 0, err
 	}
 
 	resp, err := i.cbrf.SendRequest(req)
 	if err != nil {
-		return "", err
+		return 0, err
 	}
 
 	rates, err := i.cbrf.DecodeResponse(resp)
 	if err != nil {
-		return "", err
+		return 0, err
 	}
 
 	currencyRate, err := i.cbrf.FindCurrencyRate(currency, rates)
 	if err != nil {
-		return "", err
+		return 0, err
 	}
 
 	return currencyRate, nil
